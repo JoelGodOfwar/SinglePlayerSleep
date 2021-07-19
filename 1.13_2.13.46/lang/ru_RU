@@ -1,0 +1,42 @@
+langversion: 2.13.42
+bloodmoon: Вы не можете спать во время кровавой луны.
+boolean: Аргумент должен быть логическим. Используйте
+cancel: ОТМЕНА
+canceledsleep: <player> отменил сон.
+cancelhelp: Отменяет режим сна для одного игрока. Сегодня ничего не меняется.
+cancelunrestricted: Отмена отключена.
+checkset: auto-update-check была установлена на
+clickcancel: Нажмите, чтобы отменить сон
+curvers: Версия обновлена!
+dayskipblackbed: Кровать должна быть черной, чтобы использовать DaySkipper.
+dayskipcancel: ОТМЕНА
+dayskipcanceled: <player> отменил пропуск дня.
+dayskipclickcancel: Нажмите, чтобы отменить пропуск дня
+dayskipmsg: <WHITE><player> <WHITE>хочет <BLUE>проспать <WHITE>весь <YELLOW>день <WHITE>напролет...
+dayskipmsgcommand: <WHITE><player> хочет проспать весь день напролет...<command>
+dayskipsettime: Установка времени на ночь.
+debugtrue: Отладка установлена в логическое значение.
+issleep: <player> спит.
+mustbeday: Для использования должен быть день, чтобы использовать.
+mustbenight: Для использования должна быть ночь.
+newvers: Доступна новая версия!
+nightorstorm: Должна быть ночь, либо гроза, чтобы уснуть.
+nocancel: Вы не можете отменить этот сон, или отменять нечего.
+nocheck: не будет проверять наличие обновлений!
+noperm: У вас нет разрешения на использование
+notop: Вы не ОП, или автоматическое обновление-проверка имеет значение false в файле config.yml
+reloaded: SinglePlayerSleep был перезагружен.
+respawnpointmsg: Точка возрождения установлена.
+setdownfall: Расчистка падения
+setthunder: Очищающая гроза
+settime: Установка времени на день
+sleepcommand: <player> спит <command>
+sleephelp: подлежит утверждению администратором сервера
+sleeplimit: Вы не можете сделать это в течение <length> секунд
+spscheck: установите для auto-update-check значение true или false.
+spshelp: Показывает справку для SinglePlayerSleep.
+spsreload: Перезагрузите конфигурационный файл.
+spsupdate: Проверьте наличие обновлений.
+toggledebug: Временно переключает отладку.
+touse: Спать в постели, чтобы использовать.
+yescheck: будет проверять наличие обновлений!
