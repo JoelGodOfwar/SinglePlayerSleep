@@ -2,6 +2,7 @@ name: SinglePlayerSleep
 main: com.github.joelgodofwar.sps.PluginBase
 version: 2.13.9
 author: JoelGodOfWar
+folia-supported: true
 
 commands:
   cancel:
