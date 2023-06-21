@@ -1,9 +1,0 @@
-Added color support in sleepmsgs.
-
-Added RGB Color support in sleepmsgs.
-
-Changed getDisplayName to getName to remove prefixes added by other plugins.
-
-Added Quotation marks around playername in the tellraw command of sendJson. (Added by ImDaBigBoss)
-
-
