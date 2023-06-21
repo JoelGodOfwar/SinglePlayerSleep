@@ -3,6 +3,7 @@ main: com.github.joelgodofwar.sps.SinglePlayerSleep
 version: 1.13_2.13.50
 author: JoelGodOfWar(JoelYahwehOfWar)
 api-version: 1.13
+folia-supported: true
 softdepend: [BloodMoon, bloodmoon-advanced, VentureChat, Essentials, EssentialsX, HexNicks]
 
 commands:
