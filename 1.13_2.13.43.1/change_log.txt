@@ -1,8 +1,0 @@
-fixed an error where sometimes iscanceled would become locked as true, not allowing canceling of sleep.
-added a new spam checker for sleep and cancel.
-  it is now user based, and not world based.
-Should be multiverse compatible.
-added cancellimit: 60 to config.yml
-Added config file updater, copies olf configs to new config file.
-
-
