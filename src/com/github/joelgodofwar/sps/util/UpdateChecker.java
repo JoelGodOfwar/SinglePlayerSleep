@@ -9,7 +9,9 @@ import java.net.URLConnection;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-
+/** 
+* This class is no longer used see VersionChecker.java instead
+*/
 public class UpdateChecker {
     private static int project;
     private URL checkURL;
