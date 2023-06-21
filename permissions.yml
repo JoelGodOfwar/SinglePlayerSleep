@@ -1,0 +1,34 @@
+# This is a sample permissions.yml file.
+groups:
+  Member:
+    default: true
+    permissions:
+    - -essentials.sleepingignored
+    - sps.hermits
+    - sps.cancel
+    inheritance: []
+    info:
+      prefix: '&f'
+      build: false
+      suffix: ''
+  Admin:
+    default: false
+    permissions:
+    - -essentials.sleepingignored
+    - sps.update
+    - sps.showUpdateAvailable
+    inheritance:
+    - Member
+    - Ops
+    info:
+      prefix: '&6Admin'
+      build: false
+      suffix: ''
+  Ops:
+  default: op
+  permissions:
+  - -essentials.sleepingignored
+  - -sps.unrestricted
+  - sps.command
+  inheriteance:
+  - Member

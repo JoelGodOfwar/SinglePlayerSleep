@@ -1,0 +1,51 @@
+2.13.51
+D1	
+2.13.50
+D1	Added a config option for when a nickname is not set to use displayname or username.
+D2	Added debug logs for previous changes.
+D3	Added more debug code, and changed some defaults.
+D4	Switched to i18n language files, reworked update checker.
+2.13.49
+D1- Added support for Bloodmoon Advanced.
+D2- Added a check for DisplayName when Essentials nick is returned as null.
+D3- Added color formatter for displayNames when Essentials/VentureChat/HexNicks returns null
+D4- Changed method for formatting displayNames in re: above.
+D5	Added debug checks on nickname getter.
+D6	Fixed issue with chars in HexNicks nicknames.
+1.13_2.13.48
+D1-	 Added HexNicks support.
+D2-3 Fixed HexNicks formatting.
+D4-	 Finally fixed HexNicks json formatting.
+D5-	 Minor changes to UpdateChecker Notifications.
+1.13_2.13.47
+Added permission debug logging, "/sps check", and "/sps check playername" commands.
+Anyone can check their own permissions, but only people with sps.op can check permissions of others.
+Fixed an issue with update command causing a NPE.
+Fixed an issue with the /sleep command always using world 0 as the Night/Storm check world.
+Changed reloading method, added simplified Chinese(zh_CN) translation from (NagaseYami)
+Added new config option "reset_insomnia" to reset the stat "time_since_rest" for all players in the sleeping player's world to prevent phantom spawning
+Fixed text formatting with nicknames.
+Added Japanese (ja_JP) translation from (mtmtyu)
+1.13_2.13.46
+Fixed issue of broadcasting to world's not where sleep, cancel, dayskip were initiated.
+Added config option for per world broadcasting.
+Fixed issue of a floating bracket.
+Fixed a minor bug involving an exception and a possible console spam.
+Players with sps.unrestricted permission will have color sleepmsgs.
+Fixed incomplete text issue.
+Added new config option. exitbedcancel: false
+Added tab complete for commands.
+1.13_2.13.45
+UpdateChecker update, should no longer say there is an update when using a Dev version.
+/sps update, now runs Asynchronously, which should not cause server freeze.
+Add configs for Blacklist sleep/dayskip
+Fix for issue reported by @nickly
+Fixed config.
+1.13_2.13.44
+Added color support in sleepmsgs.
+Added RGB Color support in sleepmsgs.
+Added color codes both <COLOR> and §xRRGGBB to sleepmsgs
+Added Color and RGB Color support to the dayskipmsg (Edited via lang files.)
+Changed getDisplayName to getName to remove prefixes added by other plugins.
+Added Quotation marks around playername in the tellraw command of sendJson. (Added by ImDaBigBoss)
+sleepmsgcolor and playernamecolor will be obsolete in the next version, but are needed for now.
