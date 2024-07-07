@@ -1,10 +1,17 @@
 <versions>
   <release>
-    <version>1.13_2.13.50</version>
-    <notes>D1	Added a config option for when a nickname is not set to use displayname or username.
-D2	Added debug logs for previous changes.
-D3	Added more debug code, and changed some defaults.
-D4	Switched to i18n language files, reworked update checker.</notes>
+    <version>1.13_2.13.51</version>
+    <notes>D1	Fixed DaySkip cancel msg = null.
+D2	Fixed an issue where SPS would broadcast twice.
+D3	Added new permission sps.showCancelledMsg
+D4	Removed Birthday Message code.
+D5	Added better error and log handling
+D6	Minor tweaks.
+D7	Dayskip will now work with any Bed.
+D8	Fixed a bug in dayskip code that would allow regular sleep code to run.
+D9	Added more logging to Dayskip to find a bug.
+D10	Fixed bed detector for Dayskip.
+D11	Fixed spscancel, update, sleep, and dayskip commands.</notes>
     <link>https://www.spigotmc.org/resources/singleplayersleep.68139/history</link>
   </release>
   <developer>
