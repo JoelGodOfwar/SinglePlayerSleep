@@ -32,20 +32,20 @@ public class ConfigAPI  {
 				plugin.saveResource("config.yml", true);
 				//copy(plugin.getConfig().getCurrentPath(), file);
 				FileConfiguration config = plugin.getConfig();
-				
+
 				config.options().copyDefaults(true);
 				//plugin.saveConfig();
 			}
-			}catch(Exception e){
-				e.printStackTrace();
-			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
-	
+
 	public static void Reloadconfig(Plugin plugin, Player player){
 		// Load config.
 		FileConfiguration config = plugin.getConfig();
 		String daString = config.getString("debug").replace("'", "") + ",";
-		
+
 		if(daString.contains("true")){
 			SinglePlayerSleep.debug = true;
 			if(SinglePlayerSleep.debug){logDebug("debug=true", plugin);}
@@ -72,28 +72,28 @@ public class ConfigAPI  {
 			player.sendMessage(ChatColor.YELLOW + plugin.getName() + ChatColor.WHITE + " Configs Reloaded");
 		}
 	}
-	public static  void log(String dalog, Plugin plugin){
-		SinglePlayerSleep.logger.info(plugin.getName() + " " + dalog);
+	public static void log(String dalog, Plugin plugin){
+		SinglePlayerSleep.log(plugin.getName() + " " + dalog);
 	}
 	public static  void logDebug(String dalog, Plugin plugin){
-		SinglePlayerSleep.logger.info("[DEBUG] " + plugin.getName() + " " + dalog);
+		SinglePlayerSleep.log("[DEBUG] " + plugin.getName() + " " + dalog);
 	}
 	/*
-     * this copy(); method copies the specified file from your jar
-     *     to your /plugins/<pluginName>/ folder
-     */
-    public static void copy(InputStream in, File file) {
-        try {
-            OutputStream out = new FileOutputStream(file);
-            byte[] buf = new byte[1024];
-            int len;
-            while((len=in.read(buf))>0){
-                out.write(buf,0,len);
-            }
-            out.close();
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	 * this copy(); method copies the specified file from your jar
+	 *     to your /plugins/<pluginName>/ folder
+	 */
+	public static void copy(InputStream in, File file) {
+		try {
+			OutputStream out = new FileOutputStream(file);
+			byte[] buf = new byte[1024];
+			int len;
+			while((len=in.read(buf))>0){
+				out.write(buf,0,len);
+			}
+			out.close();
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
