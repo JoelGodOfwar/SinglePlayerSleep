@@ -1,9 +1,8 @@
 name: SinglePlayerSleep
 main: com.github.joelgodofwar.sps.SinglePlayerSleep
-version: 1.13_2.13.50
+version: 1.13_2.13.51.D11
 author: JoelGodOfWar(JoelYahwehOfWar)
 api-version: 1.13
-folia-supported: true
 softdepend: [BloodMoon, bloodmoon-advanced, VentureChat, Essentials, EssentialsX, HexNicks]
 
 commands:
@@ -58,6 +57,9 @@ permissions:
     description: Allows one player to change the time to night when using a bed. Without clearing local difficulty.
     default: false
   sps.dayskipcommand:
-    sps.command:
     description: Allows player to use the /dayskip command, instead of a bed.
     default: op
+  sps.showCancelledMsg:
+    description: Allows player to see the player has cancelled sleeping message.
+    default: true
+    
