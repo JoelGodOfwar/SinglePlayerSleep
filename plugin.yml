@@ -1,6 +1,6 @@
 name: SinglePlayerSleep
 main: com.github.joelgodofwar.sps.SinglePlayerSleep
-version: 1.13_2.13.51.D11
+version: 1.13_2.13.52
 author: JoelGodOfWar(JoelYahwehOfWar)
 api-version: 1.13
 softdepend: [BloodMoon, bloodmoon-advanced, VentureChat, Essentials, EssentialsX, HexNicks]
