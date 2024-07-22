@@ -1,5 +1,9 @@
-2.13.52
+2.13.53
 D1	
+2.13.52
+D1	Switched color parser to mimic EssentialsX.
+D2	Added fileVersions.yml, split sleepmsgs into messages.yml
+D3	Fixed missed message parser locations.
 2.13.51
 D1	Fixed DaySkip cancel msg = null.
 D2	Fixed an issue where SPS would broadcast twice.

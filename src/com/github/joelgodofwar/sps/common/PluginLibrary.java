@@ -114,6 +114,11 @@ public class PluginLibrary {
 	public static final ReportType ERROR_PARSING_SLEEP_COMMAND = new ReportType("Error parsing Sleep Command.");
 	public static final ReportType ERROR_PARSING_SPSCANCEL_COMMAND = new ReportType("Error parsing Cancel Command.");
 	public static final ReportType ERROR_PARSING_UPDATE_COMMAND = new ReportType("Error parsing Update Command.");
+	public static final ReportType ERROR_LOADING_MESSAGES_FILE = new ReportType("Error Loading Messages file.");
+
+	public static final ReportType ERROR_ENABLING_PLUGIN = new ReportType("Error during onEnable.");
+	public static final ReportType REPORT_CANNOT_LOAD_FILEVERSION = new ReportType("Error loading fileVersion checker.");
+	public static final ReportType REPORT_CANNOT_SAVE_FILEVERSION = new ReportType("Error saving fileVersion checker.");
 
 
 

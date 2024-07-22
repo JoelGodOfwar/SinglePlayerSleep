@@ -1,5 +1,5 @@
 # DO NOT CHANGE VERSION
-version: 1.0.7
+version: 1.0.9
 # 
 # Change to false to stop auto-update-check.
 auto_update_check: true
@@ -83,16 +83,3 @@ nickname:
 # 
 # Set to true to use random sleep msgs.
 randomsleepmsgs: true
-# 
-# Set to the number of sleep msgs
-numberofsleepmsgs: 5
-# Set msgs for random sleep msgs here "sleepmsg#: <player> msg here"
-# Don't forget the space between : and the start of the message.
-# Color codes are now usable in sleepmsgs, Example: <BLACK>Black<RESET>Reset
-# RGB format is §xFF00FF (§xFFFFFF<player> §x000000i§x999999s §x111111s§x888888l§x222222e§x777777e§x333333p§x666666i§x444444n§x555555g)
-# THERE MUST BE A COLOR CODE IN FRONT
-sleepmsg1: §xFFFFFF<player> §xFF0000is §xFF7F00s§xFFFF00l§x00FF00ee§x0000FFpi§x4b0082n§x9400D3g
-sleepmsg2: §xFFFFFF<player> §x00FFFFwent to bed. Sweet Dreams
-sleepmsg3: <YELLOW>Shhh! §xFFFFFF<player> §xFF0000is §xFF00FFtrying §x0000FFto §x00FF00sleep!
-sleepmsg4: §xFFFFFF<player> §xFF00FFis asleep at the wheel
-sleepmsg5: §xFFFFFFNO ONE<colon> ...\n§xFFFFFF<player><colon> §xFFFF00go to bed.

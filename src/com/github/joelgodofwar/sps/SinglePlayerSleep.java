@@ -14,9 +14,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -31,6 +33,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -57,7 +60,7 @@ import com.github.joelgodofwar.sps.common.PluginLogger;
 import com.github.joelgodofwar.sps.common.error.DetailedErrorReporter;
 import com.github.joelgodofwar.sps.common.error.Report;
 import com.github.joelgodofwar.sps.i18n.Translator;
-import com.github.joelgodofwar.sps.util.Format;
+import com.github.joelgodofwar.sps.util.FormatUtil;
 import com.github.joelgodofwar.sps.util.StrUtils;
 import com.github.joelgodofwar.sps.util.Utils;
 import com.github.joelgodofwar.sps.util.Version;
@@ -114,17 +117,26 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 	public HashMap<UUID, Long> cancellimit =  new HashMap<UUID, Long>();
 	YmlConfiguration config = new YmlConfiguration();
 	YamlConfiguration oldconfig = new YamlConfiguration();
+	YmlConfiguration messages = new YmlConfiguration();
+	public YamlConfiguration oldMessages;
+	public FileConfiguration fileVersions  = new YamlConfiguration();
+	public File fileVersionsFile;
+	public File configFile;
+	public File messagesFile;
+	public Version minConfigVersion = new Version("1.0.9");
+	public Version minMessagesVersion = new Version("1.0.1");
 	public boolean isBloodMoon = false;
 	public String jsonColorString = "\"},{\"text\":\"<text>\",\"color\":\"<color>\"},{\"text\":\"";
-	public boolean is116 = false;
+	public boolean is116 = true;
 	public String blacklist_sleep;
 	public String blacklist_dayskip;
 	boolean colorful_console;
-	String configVersion = "1.0.7";
+	//String configVersion = "1.0.7";
 	String pluginName = THIS_NAME;
 	public String jarfilename = this.getFile().getAbsoluteFile().toString();
 	public static DetailedErrorReporter reporter;
 	public PluginLogger LOGGER;
+
 
 	@Override
 	public void onLoad() {
@@ -138,6 +150,8 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 		//log("displaycancel=" + displaycancel);
 		config = new YmlConfiguration();
 		oldconfig = new YamlConfiguration();
+		messages = new YmlConfiguration();
+		oldMessages = new YamlConfiguration();
 		blacklist_sleep = config.getString("blacklist.sleep", "");
 		blacklist_dayskip = config.getString("blacklist.dayskip", "");
 		colorful_console = getConfig().getBoolean("colorful_console", true);
@@ -164,6 +178,8 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 		//log("displaycancel=" + displaycancel);
 		config = new YmlConfiguration();
 		oldconfig = new YamlConfiguration();
+		messages = new YmlConfiguration();
+		oldMessages = new YamlConfiguration();
 		blacklist_sleep = config.getString("blacklist.sleep", "");
 		blacklist_dayskip = config.getString("blacklist.dayskip", "");
 		colorful_console = getConfig().getBoolean("colorful_console", true);
@@ -188,106 +204,37 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 			LOGGER.debug(ChatColor.RED + "Jar file contains -DEV, debug set to true" + ChatColor.RESET);
 			//log("jarfile contains dev, debug set to true.");
 		}
-		LOGGER.debug("datafolder = " + getDataFolder());
 
-		/**  Check for config */
-		try{
-			if(!getDataFolder().exists()){
-				LOGGER.log("Data Folder doesn't exist");
-				LOGGER.log("Creating Data Folder");
-				getDataFolder().mkdirs();
-				LOGGER.log("Data Folder Created at " + getDataFolder());
-			}
-			File  file = new File(getDataFolder(), "config.yml");
-			LOGGER.debug("" + file);
-			if(!file.exists()){
-				LOGGER.log("config.yml not found, creating!");
-				saveResource("config.yml", true);
-			}
-		}catch(Exception exception){
-			reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_CANNOT_CHECK_CONFIG).error(exception));
-		}
-		/** end config check */
-		/** Check if config.yml is up to date.*/
-		boolean needConfigUpdate = false;
-		String oldConfig = new File(getDataFolder(), "config.yml").getPath().toString();
+		// Make sure directory exists and files exist.
+		checkDirectories();
+		LOGGER.log("Loading file version checker...");
+		fileVersionsFile = new File(getDataFolder() + "" + File.separatorChar + "fileVersions.yml");
 		try {
-			oldconfig.load(new File(getDataFolder() + "" + File.separatorChar + "config.yml"));
+			fileVersions.load(fileVersionsFile);
+		} catch (Exception exception) {
+			reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_CANNOT_LOAD_FILEVERSION).error(exception));
+		}
+		// Check if Config needs update.
+		checkConfig();
+		// Check if MEssages needs update.
+		checkMessages();
+
+		LOGGER.log("Loading config.yml...");
+		configFile = new File(getDataFolder() + "" + File.separatorChar + "config.yml");
+		try {
+			config.load(configFile);
 		} catch (Exception exception) {
 			reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_CANNOT_LOAD_CONFIG).error(exception));
 		}
-		String checkconfigversion = oldconfig.getString("version", "1.0.0");
-		if(checkconfigversion != null){
-			if(!checkconfigversion.equalsIgnoreCase(configVersion)){
-				needConfigUpdate = true;
-			}
+
+		LOGGER.log("Loading messages.yml...");
+		messagesFile = new File(getDataFolder(), "messages.yml");
+		try {
+			messages.load(messagesFile);
+		} catch (Exception exception) {
+			reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.ERROR_LOADING_MESSAGES_FILE).error(exception));
 		}
-		if(needConfigUpdate){
-			try {
-				copyFile_Java7(getDataFolder() + "" + File.separatorChar + "config.yml",getDataFolder() + "" + File.separatorChar + "old_config.yml");
-			} catch (Exception exception) {
-				reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_CANNOT_COPY_FILE).error(exception));
-			}
-			try {
-				oldconfig.load(new File(getDataFolder(), "config.yml"));
-			} catch (Exception exception) {
-				reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_CANNOT_LOAD_CONFIG).error(exception));
-			}
-			saveResource("config.yml", true);
-			try {
-				config.load(new File(getDataFolder(), "config.yml"));
-			} catch (Exception exception) {
-				LOGGER.warn("Could not load config.yml");
-				reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_CANNOT_LOAD_CONFIG).error(exception));
-			}
-			try {
-				oldconfig.load(new File(getDataFolder(), "old_config.yml"));
-			} catch (Exception exception) {
-				reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_CANNOT_LOAD_CONFIG).error(exception));
-			}
-			config.set("auto_update_check", oldconfig.get("auto_update_check", true));
-			config.set("debug", oldconfig.get("debug", false));
-			config.set("lang", oldconfig.get("lang", "en_US"));
-			config.set("blacklist.sleep", oldconfig.get("blacklist.sleep", "world_nether, world_the_end"));
-			config.set("blacklist.dayskip", oldconfig.get("blacklist.dayskip", "world_nether, world_the_end"));
-			config.set("broadcast_per_world", oldconfig.get("broadcast_per_world", true));
-			config.set("reset_insomnia", oldconfig.get("reset_insomnia", false));
-			config.set("colorful_console", oldconfig.get("colorful_console", true));
-			config.set("clearrain_enabled", oldconfig.get("clearrain_enabled", false));
-			config.set("unrestrictedsleep", oldconfig.get("unrestrictedsleep", false));
-			config.set("waketime", oldconfig.get("waketime", "NORMAL"));
-			config.set("sleepdelay", oldconfig.get("sleepdelay", 10));
-			config.set("enabledayskipper", oldconfig.get("enabledayskipper", false));
-			config.set("dayskipdelay", oldconfig.get("dayskipdelay", 10));
-			config.set("unrestricteddayskipper", oldconfig.get("unrestricteddayskipper", false));
-			config.set("dayskipperitemrequired", oldconfig.get("dayskipperitemrequired", true));
-			config.set("cancelcolor", oldconfig.get("cancelcolor", "RED"));
-			config.set("cancelbracketcolor", oldconfig.get("cancelbracketcolor", "YELLOW"));
-			config.set("sleepmsgcolor", oldconfig.get("sleepmsgcolor", "STRIKETHROUGHYELLOW"));
-			config.set("playernamecolor", oldconfig.get("playernamecolor", "WHITE"));
-			config.set("exitbedcancel", oldconfig.get("exitbedcancel", false));
-			config.set("display_cancel", oldconfig.get("display_cancel", true));
-			config.set("cancelbroadcast", oldconfig.get("cancelbroadcast", true));
-			config.set("sleeplimit", oldconfig.get("sleeplimit", 60));
-			config.set("cancellimit", oldconfig.get("cancellimit", 60));
-			config.set("notifymustbenight", oldconfig.get("notifymustbenight", false));
-			config.set("nickname.usedisplayname", oldconfig.get("nickname.usedisplayname", true));
-			config.set("randomsleepmsgs", oldconfig.get("randomsleepmsgs", true));
-			config.set("numberofsleepmsgs", oldconfig.get("numberofsleepmsgs", 4));
-			for (int i = 1; i < (getConfig().getInt("numberofsleepmsgs") + 1); i++) {
-				config.set("sleepmsg" + i, oldconfig.get("sleepmsg" + i, "<player> is sleeping"));
-			}
-			try {
-				config.save(new File(getDataFolder(), "config.yml"));
-			} catch (Exception exception) {
-				reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_CANNOT_SAVE_CONFIG).error(exception));
-			}
-			LOGGER.log("config.yml has been updated");
-		}else{
-			//log("" + "not found");
-		}
-		/** End Config update check */
-		// End config.yml check.
+
 
 		/** Update Checker */
 		if(UpdateCheck){
@@ -336,31 +283,6 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 			saveResource("permissions.yml", true);
 		}
 		getServer().getPluginManager().registerEvents(this, this);
-
-		if((getConfig().getBoolean("debug")==true)&&!(jarfile.toString().contains("-DEV"))){
-			LOGGER.debug("Config.yml dump");
-			LOGGER.debug("auto_update_check=" + getConfig().getBoolean("auto_update_check"));
-			LOGGER.debug("debug=" + getConfig().getBoolean("debug"));
-			LOGGER.debug("lang=" + getConfig().getString("lang"));
-			LOGGER.debug("unrestrictedsleep=" + getConfig().getBoolean("unrestrictedsleep"));
-			LOGGER.debug("waketime=" + getConfig().getString("waketime"));
-			LOGGER.debug("sleepdelay=" + getConfig().getString("sleepdelay"));
-			LOGGER.debug("enabledayskipper=" + getConfig().getString("enabledayskipper"));
-			LOGGER.debug("dayskipdelay=" + getConfig().getString("dayskipdelay"));
-			LOGGER.debug("unrestricteddayskipper=" + getConfig().getBoolean("unrestricteddayskipper"));
-			LOGGER.debug("dayskipperitemrequired=" + getConfig().getBoolean("dayskipperitemrequired"));
-			LOGGER.debug("cancelcolor=" + getConfig().getString("cancelcolor"));
-			LOGGER.debug("sleepmsgcolor=" + getConfig().getString("sleepmsgcolor"));
-			LOGGER.debug("playernamecolor=" + getConfig().getString("playernamecolor"));
-			LOGGER.debug("exitbedcancel=" + getConfig().getBoolean("exitbedcancel"));
-			LOGGER.debug("display_cancel=" + getConfig().getBoolean("display_cancel"));
-			LOGGER.debug("cancelbroadcast=" + getConfig().getBoolean("cancelbroadcast"));
-			LOGGER.debug("sleeplimit=" + getConfig().getInt("sleeplimit"));
-			LOGGER.debug("cancellimit=" + getConfig().getInt("cancellimit"));
-			LOGGER.debug("notifymustbenight=" + getConfig().getInt("notifymustbenight"));
-			LOGGER.debug("randomsleepmsgs=" + getConfig().getBoolean("randomsleepmsgs"));
-			LOGGER.debug("numberofsleepmsgs=" + getConfig().getString("numberofsleepmsgs"));
-		}
 
 		consoleInfo("ENABLED - Loading took " + LoadTime(startTime));
 		try {
@@ -582,14 +504,19 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 								String damsg = "[\"\",{\"text\":\"sleepmsg " + canmsg + "]";
 								String msgcolor = ChatColorUtils.setColorsByName(getConfig().getString("sleepmsgcolor", "YELLOW"));
 								LOGGER.debug("PIS DS ... msgcolor=" + msgcolor);
-								String sleepmsg = "" + get("sps.message.dayskipmsg","<player> wants to sleep the day away...");
+								//String sleepmsg = "" + get("sps.message.dayskipmsg","<player> wants to sleep the day away...");
+								int maxmsgs = messages.getInt("messages.dayskip.count");
+								int randomnumber = RandomNumber(maxmsgs);
+								String sleepmsg = messages.getString("messages.dayskip.message_" + randomnumber, ChatColor.WHITE + "<player> wants to sleep the day away...");
 								if(is116){
 									sleepmsg = ChatColorUtils.setNametoRGB(sleepmsg);
-									sleepmsg = StrUtils.parseRGBNameColors(sleepmsg);
+									//sleepmsg = StrUtils.parseRGBNameColors(sleepmsg);
 								}else{
 									sleepmsg = StrUtils.stripRGBColors(sleepmsg);// strip RGBHEX
 									sleepmsg = ChatColorUtils.setColors(sleepmsg);// SetColorsByName
 								}
+								sleepmsg = sleepmsg.replace("<colon>", ":");
+								sleepmsg = FormatUtil.formatString(sleepmsg);
 
 								damsg = damsg.replace("sleepmsg", sleepmsg).replace("\"]\"", "\"" + msgcolor + "]\"");
 								//damsg = ChatColorUtils.setColors(damsg);
@@ -601,7 +528,7 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 									//logWarn("nickName ! contain SS");
 									playercolor = ChatColorUtils.setColorsByName(getConfig().getString("playernamecolor"));
 								}else{
-									nickName = StrUtils.parseRGBNameColors(nickName);
+									nickName = FormatUtil.formatString(nickName);
 								}
 								/** end nickname parser */
 								LOGGER.debug("PIS DS ... playercolor=" + playercolor);
@@ -674,7 +601,7 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 						LOGGER.debug("PIS IN... " + player.getName() + " is sleeping.");
 						long time = System.currentTimeMillis() / 1000;
 						if(sleeplimit.get(player.getUniqueId()) == null){
-							LOGGER.debug("PIS sleeplimit UUID=null");
+							LOGGER.debug("PIS IN sleeplimit UUID=null");
 							// Check if player has sps.unrestricted
 							if (!player.hasPermission("sps.unrestricted")) {
 								// Set player's time in HashMap
@@ -682,7 +609,7 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 								LOGGER.debug("PIS IN... " + player.getDisplayName() + " added to playersSlept");
 							}
 						}else{
-							LOGGER.debug("PIS sleeplimit UUID !null");
+							LOGGER.debug("PIS IN sleeplimit UUID !null");
 							// Player is on the list.
 							timer = sleeplimit.get(player.getUniqueId());
 							LOGGER.debug("PIS IN time=" + time);
@@ -736,10 +663,11 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 								String damsg = "[\"\",{\"text\":\"sleepmsg " + canmsg + "\"}]";
 								String sleepmsg;
 								if (getConfig().getBoolean("randomsleepmsgs")){
-									int maxmsgs = getConfig().getInt("numberofsleepmsgs");
+									int maxmsgs = messages.getInt("messages.sleep.count");
 									int randomnumber = RandomNumber(maxmsgs);
-									sleepmsg = getConfig().getString("sleepmsg" + randomnumber, ChatColor.WHITE + "<player> is sleeping");
+									sleepmsg = messages.getString("messages.sleep.message_" + randomnumber, ChatColor.WHITE + "<player> is sleeping");
 									sleepmsg = sleepmsg.replace("<colon>", ":");
+									sleepmsg = FormatUtil.formatString(sleepmsg);
 									LOGGER.debug("PIS IN ... maxmsgs=" + maxmsgs);
 									LOGGER.debug("PIS IN ... randomnumber=" + randomnumber);
 								}else{
@@ -750,8 +678,8 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 									LOGGER.debug("PIS IN sleepmsg=" + sleepmsg);
 									sleepmsg = ChatColorUtils.setNametoRGB(sleepmsg);
 									LOGGER.debug("PIS IN sleepmsg=" + sleepmsg);
-									sleepmsg = StrUtils.parseRGBNameColors(sleepmsg);
-									LOGGER.debug("PIS IN sleepmsg=" + sleepmsg);
+									/**sleepmsg = StrUtils.parseRGBNameColors(sleepmsg);
+									LOGGER.debug("PIS IN sleepmsg=" + sleepmsg);//*/
 								}else{
 									LOGGER.debug("PIS IN sleepmsg=" + sleepmsg);
 									sleepmsg = StrUtils.stripRGBColors(sleepmsg);// strip RGBHEX
@@ -775,7 +703,7 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 									//logWarn("nickName ! contain SS");
 									playercolor = ChatColorUtils.setColorsByName(getConfig().getString("playernamecolor"));
 								}else{
-									nickName = StrUtils.parseRGBNameColors(nickName);
+									nickName = FormatUtil.formatString(nickName);
 								}
 								/** end nickname parser */
 
@@ -838,15 +766,15 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 									if(is116){
 										LOGGER.debug("PIS IN sleepmsg=" + sleepmsg);
 										sleepmsg = ChatColorUtils.setNametoRGB(sleepmsg);
-										LOGGER.debug("PIS IN sleepmsg=" + sleepmsg);
-										sleepmsg = StrUtils.parseRGBNameColors(sleepmsg);
-										LOGGER.debug("PIS IN sleepmsg=" + sleepmsg);
+										LOGGER.debug("PIS IN name2RGB sleepmsg=" + sleepmsg);
+										sleepmsg = FormatUtil.formatString(sleepmsg);
+										LOGGER.debug("PIS IN parseRGB sleepmsg=" + sleepmsg);
 									}else{
 										LOGGER.debug("PIS IN sleepmsg=" + sleepmsg);
 										sleepmsg = StrUtils.stripRGBColors(sleepmsg);// strip RGBHEX
-										LOGGER.debug("PIS IN sleepmsg=" + sleepmsg);
+										LOGGER.debug("PIS IN stripRGB sleepmsg=" + sleepmsg);
 										sleepmsg = ChatColorUtils.setColors(sleepmsg);// SetColorsByName
-										LOGGER.debug("PIS IN sleepmsg=" + sleepmsg);
+										LOGGER.debug("PIS IN SC sleepmsg=" + sleepmsg);
 									}
 									LOGGER.debug("PIS IN sleepmsg=" + sleepmsg);
 									//sleepmsg = "<player> Has passed Go, Collected their $200, and checked in at Old Kent Road!";
@@ -861,10 +789,12 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 									String nickName = getNickname(player);
 									String playercolor = "";
 									if(!nickName.contains("§")){
-										//logWarn("nickName ! contain SS");
+										LOGGER.debug("PIS IN nickName contain §");
 										playercolor = ChatColorUtils.setColorsByName(getConfig().getString("playernamecolor"));
 									}else{
-										nickName = StrUtils.parseRGBNameColors(nickName);
+										nickName = FormatUtil.formatString(nickName);
+										LOGGER.debug("PIS IN nick !contains §" );
+										LOGGER.debug("PIS IN nickName AfterParse = " + nickName );
 									}
 									/** end nickname parser */
 
@@ -1226,7 +1156,7 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 			reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_CANNOT_UPDATE_PLUGIN).error(exception));
 		}
 		if(player.getName().equals("JoelYahwehOfWar")||player.getName().equals("JoelGodOfWar")){
-			player.sendMessage(THIS_NAME + " " + THIS_VERSION + " Hello father!");
+			player.sendMessage(THIS_NAME + " " + THIS_VERSION + " §x§1§1§F§F§A§AHello §x§A§A§F§F§1§1father!");
 		}
 	}
 
@@ -1293,10 +1223,14 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 		return dacount;
 	}
 
-	public static void copyFile_Java7(String origin, String destination) throws IOException {
+	public static void copyFile(String origin, String destination) throws IOException {
 		try {
 			Path FROM = Paths.get(origin);
 			Path TO = Paths.get(destination);
+			// Ensure the destination directory exists
+			if (TO.getParent() != null) {
+				Files.createDirectories(TO.getParent());
+			}
 			//overwrite the destination file if it exists, and copy
 			// the file attributes, including the rwx permissions
 			CopyOption[] options = new CopyOption[]{
@@ -1357,7 +1291,7 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 					return nick;
 				}
 				LOGGER.debug("VentureChat Nick=null using " + playerName);
-				return Format.color(playerName);
+				return ChatColorUtils.setColorsByCode(playerName);
 			}else if(getServer().getPluginManager().getPlugin("Essentials") != null){
 				Essentials ess = (Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
 				//User user = ess.getUserMap().getUser(player.getName());
@@ -1630,6 +1564,214 @@ public class SinglePlayerSleep extends JavaPlugin implements Listener{
 			return true;
 		default:
 			return false;
+		}
+	}
+
+	public void checkDirectories() {
+		/**	Check for config */
+		try{
+			if(!getDataFolder().exists()){
+				LOGGER.log("Data Folder doesn't exist");
+				LOGGER.log("Creating Data Folder");
+				getDataFolder().mkdirs();
+				LOGGER.log("Data Folder Created at " + getDataFolder());
+			}
+			File file = new File(getDataFolder(), "config.yml");
+			if(!file.exists()){
+				LOGGER.log("config.yml not found, creating!");
+				saveResource("config.yml", true);
+			}
+			file = new File(getDataFolder(), "messages.yml");
+			if(!file.exists()){
+				LOGGER.log("messages.yml not found, creating!");
+				saveResource("messages.yml", true);
+			}
+			file = new File(getDataFolder(), "fileVersions.yml");
+			if(!file.exists()){
+				LOGGER.log("fileVersions.yml not found, creating!");
+				saveResource("fileVersions.yml", true);
+			}
+		}catch(Exception exception){
+			reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_CANNOT_CHECK_CONFIG).error(exception));
+		}
+	}
+
+	public void checkConfig() {
+		// Config file check
+		Version curConfigVersion = new Version(fileVersions.getString("config", "0.0.1"));
+		if(curConfigVersion.compareTo(minConfigVersion) < 0) {
+			LOGGER.log("config.yml is outdated backing up...");
+			try {
+				copyFile(getDataFolder() + "" + File.separatorChar + "config.yml",getDataFolder() + "" + File.separatorChar + "backup" + File.separatorChar + "config.yml");
+			} catch (Exception exception) {
+				reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_CANNOT_COPY_FILE).error(exception));
+			}
+			LOGGER.log("Saving new config.yml...");
+			saveResource("config.yml", true);
+			// from new File(getDataFolder() + "" + File.separatorChar + "backup", "config.yml")
+			copyConfig("" + getDataFolder() + File.separatorChar + "backup" + File.separatorChar + "config.yml", "" + getDataFolder() + File.separatorChar + "config.yml");
+		}
+		LOGGER.log("Loading config file...");
+		try {
+			config.load(new File(getDataFolder() + "" + File.separatorChar + "config.yml"));
+		} catch (Exception exception) {
+			reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_CANNOT_LOAD_CONFIG).error(exception));
+		}
+	}
+
+	public void copyConfig(String from, String to){
+		LOGGER.log("Loading new config.yml...");
+		try {
+			config.load(new File(to));
+		} catch (Exception exception) {
+			reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_CANNOT_CHECK_CONFIG).error(exception));
+		}
+		LOGGER.log("Loading old config.yml...");
+		try {
+			oldconfig.load(new File(from));
+		} catch (Exception exception) {
+			reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_CANNOT_CHECK_CONFIG).error(exception));
+		}
+		LOGGER.log("Copying values from backup" + File.separatorChar + "config.yml...");
+		config.set("auto_update_check", oldconfig.get("auto_update_check", true));
+		config.set("debug", oldconfig.get("debug", false));
+		config.set("lang", oldconfig.get("lang", "en_US"));
+		config.set("blacklist.sleep", oldconfig.get("blacklist.sleep", "world_nether, world_the_end"));
+		config.set("blacklist.dayskip", oldconfig.get("blacklist.dayskip", "world_nether, world_the_end"));
+		config.set("broadcast_per_world", oldconfig.get("broadcast_per_world", true));
+		config.set("reset_insomnia", oldconfig.get("reset_insomnia", false));
+		config.set("colorful_console", oldconfig.get("colorful_console", true));
+		config.set("clearrain_enabled", oldconfig.get("clearrain_enabled", false));
+		config.set("unrestrictedsleep", oldconfig.get("unrestrictedsleep", false));
+		config.set("waketime", oldconfig.get("waketime", "NORMAL"));
+		config.set("sleepdelay", oldconfig.get("sleepdelay", 10));
+		config.set("enabledayskipper", oldconfig.get("enabledayskipper", false));
+		config.set("dayskipdelay", oldconfig.get("dayskipdelay", 10));
+		config.set("unrestricteddayskipper", oldconfig.get("unrestricteddayskipper", false));
+		config.set("dayskipperitemrequired", oldconfig.get("dayskipperitemrequired", true));
+		config.set("cancelcolor", oldconfig.get("cancelcolor", "RED"));
+		config.set("cancelbracketcolor", oldconfig.get("cancelbracketcolor", "YELLOW"));
+		config.set("sleepmsgcolor", oldconfig.get("sleepmsgcolor", "STRIKETHROUGHYELLOW"));
+		config.set("playernamecolor", oldconfig.get("playernamecolor", "WHITE"));
+		config.set("exitbedcancel", oldconfig.get("exitbedcancel", false));
+		config.set("display_cancel", oldconfig.get("display_cancel", true));
+		config.set("cancelbroadcast", oldconfig.get("cancelbroadcast", true));
+		config.set("sleeplimit", oldconfig.get("sleeplimit", 60));
+		config.set("cancellimit", oldconfig.get("cancellimit", 60));
+		config.set("notifymustbenight", oldconfig.get("notifymustbenight", false));
+		config.set("nickname.usedisplayname", oldconfig.get("nickname.usedisplayname", true));
+		config.set("randomsleepmsgs", oldconfig.get("randomsleepmsgs", true));
+		LOGGER.log("Saving config.yml...");
+		try {
+			config.save(new File(getDataFolder(), "config.yml"));
+		} catch (Exception exception) {
+			reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_CANNOT_SAVE_CONFIG).error(exception));
+		}
+		config = new YmlConfiguration();
+		oldconfig = null;
+		LOGGER.log("Update complete config.yml...");
+	}
+
+	public void checkMessages() {
+		// Message file check
+		Version curMessagesVersion = new Version(fileVersions.getString("messages", "0.0.1"));
+		if(curMessagesVersion.compareTo(minMessagesVersion) < 0) {
+			LOGGER.log("messages.yml is outdated backing up...");
+			try {
+				copyFile(getDataFolder() + "" + File.separatorChar + "messages.yml", getDataFolder() + "" + File.separatorChar + "backup" + File.separatorChar + "messages.yml");
+			} catch (Exception exception) {
+				reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_MESSAGES_COPY_ERROR).error(exception));
+			}
+			LOGGER.log("Saving new messages.yml...");
+			saveResource("messages.yml", true);
+			LOGGER.log("Copying values from backup" + File.separatorChar + "messages.yml...");
+
+			try {
+				updateMessages(new File(getDataFolder() + "" + File.separatorChar + "backup" + File.separatorChar + "messages.yml"),
+						new File(getDataFolder() + "" + File.separatorChar + "messages.yml"), "sleep");
+				updateMessages(new File(getDataFolder() + "" + File.separatorChar + "backup" + File.separatorChar + "messages.yml"),
+						new File(getDataFolder() + "" + File.separatorChar + "messages.yml"), "dayskip");
+			} catch (Exception exception) {
+				reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_MESSAGES_LOAD_ERROR).error(exception));
+			}
+
+			LOGGER.log("Saving messages.yml...");
+			try {
+				messages.save(new File(getDataFolder(), "messages.yml"));
+			} catch (Exception exception) {
+				reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_OLDMESSAGES_SAVE_ERROR).error(exception));
+			}
+			messages = new YmlConfiguration();
+			oldMessages = null;
+			LOGGER.log("Update complete config.yml...");
+		}
+		LOGGER.log("Loading messages file...");
+		try {
+			messages.load(new File(getDataFolder() + "" + File.separatorChar + "messages.yml"));
+		} catch (Exception exception) {
+			reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_MESSAGES_LOAD_ERROR).error(exception));
+		}
+	}
+
+	public void updateMessages(File oldFile, File newFile, String sectionName) throws IOException {
+		// Load the old and new messages.yml files
+		FileConfiguration oldMessages = YamlConfiguration.loadConfiguration(oldFile);
+		FileConfiguration newMessages = YamlConfiguration.loadConfiguration(newFile);
+
+		// Fetch the specified sections from both files
+		ConfigurationSection oldMessagesSection = oldMessages.getConfigurationSection("messages." + sectionName);
+		ConfigurationSection newMessagesSection = newMessages.getConfigurationSection("messages." + sectionName);
+
+		if ((oldMessagesSection != null) && (newMessagesSection != null)) {
+			Set<String> uniqueMessages = new HashSet<>();
+
+			// Collect unique messages from the old file
+			for (String key : oldMessagesSection.getKeys(false)) {
+				if (key.startsWith("message_")) {
+					String message = oldMessagesSection.getString(key);
+					if (message != null) {
+						uniqueMessages.add(message);
+					}
+				}
+			}
+
+			// Collect unique messages from the new file
+			for (String key : newMessagesSection.getKeys(false)) {
+				if (key.startsWith("message_")) {
+					String message = newMessagesSection.getString(key);
+					if (message != null) {
+						uniqueMessages.add(message);
+					}
+				}
+			}
+
+			// Convert the Set to a List
+			List<String> messageList = new ArrayList<>(uniqueMessages);
+
+			// Write the unique messages back to the new messages.yml file
+			ConfigurationSection updatedMessagesSection = newMessages.createSection("messages." + sectionName);
+
+			updatedMessagesSection.set("count", messageList.size());
+			for (int i = 0; i < messageList.size(); i++) {
+				updatedMessagesSection.set("message_" + (i + 1), messageList.get(i));
+			}
+			try {
+				// Save the updated configuration to the new file
+				newMessages.save(newFile);
+			} catch (Exception exception) {
+				reporter.reportDetailed(this, Report.newBuilder(PluginLibrary.REPORT_OLDMESSAGES_SAVE_ERROR).error(exception));
+			}
+			// Free up memory
+			uniqueMessages.clear();
+			messageList.clear();
+			oldMessagesSection = null;
+			newMessagesSection = null;
+			updatedMessagesSection = null;
+			oldMessages = null;
+			newMessages = null;
+
+			// Suggest garbage collection
+			System.gc();
 		}
 	}
 
