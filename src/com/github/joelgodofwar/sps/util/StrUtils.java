@@ -40,7 +40,6 @@ public class StrUtils {
 	}
 
 	// §x§1§1§1§1§1§1D§x§2§2§2§2§2§2e§x§3§3§3§3§3§3M§x§4§4§4§4§4§4o§x§5§5§5§5§5§5N
-	@SuppressWarnings("unused")
 	public static String parseRGBNameColors(String string){
 		String nickPrefix = "\"}";
 		String nickString = ",{\"text\":\"<text>\",\"color\":\"<color>\"}";
