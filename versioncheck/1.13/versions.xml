@@ -7,11 +7,14 @@ D3	Fixed missed message parser locations.</notes>
     <link>https://www.spigotmc.org/resources/singleplayersleep.68139/history</link>
   </release>
   <developer>
-    <version>1.13_2.13.50.D3</version>
-    <notes>D1	Added a config option for when a nickname is not set to use displayname or username.
-D2	Added debug logs for previous changes.
-D3	Added more debug code, and changed some defaults.
-D4	Switched to i18n language files.</notes>
+    <version>1.16_2.13.53.D7</version>
+    <notes>D1	Fixed server version comparer to work with Paper.
+D2	Fixed issue with messages and sleep commands.
+D3	Fix color formating. Changed min version to 1.16
+D4	Fixed message copier.
+D5	Fixed Random Message selector.
+D6	Fixed issue with hexcode updater.
+D7	Fixed pattern for Standard Hex codes, Now converts Legacy codes to Hex.</notes>
     <link>https://discord.com/channels/654087250665144321/654444452982816769</link>
   </developer>
 </versions>
