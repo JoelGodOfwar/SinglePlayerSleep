@@ -1,20 +1,21 @@
 <versions>
   <release>
-    <version>1.13_2.13.52</version>
-    <notes>D1	Switched color parser to mimic EssentialsX.
-D2	Added fileVersions.yml, split sleepmsgs into messages.yml
-D3	Fixed missed message parser locations.</notes>
-    <link>https://www.spigotmc.org/resources/singleplayersleep.68139/history</link>
-  </release>
-  <developer>
-    <version>1.16_2.13.53.D7</version>
+    <version>1.13_2.13.5</version>
     <notes>D1	Fixed server version comparer to work with Paper.
 D2	Fixed issue with messages and sleep commands.
 D3	Fix color formating. Changed min version to 1.16
 D4	Fixed message copier.
 D5	Fixed Random Message selector.
 D6	Fixed issue with hexcode updater.
-D7	Fixed pattern for Standard Hex codes, Now converts Legacy codes to Hex.</notes>
+D7	Fixed pattern for Standard Hex codes, Now converts Legacy codes to Hex.
+D8	Added parser for legacy format codes to MiniMessage Tags.</notes>
+    <link>https://www.spigotmc.org/resources/singleplayersleep.68139/history</link>
+  </release>
+  <developer>
+    <version>1.16_2.13.54.D3</version>
+    <notes>D1	Fixed sleepmsg when player has unrestricted permission.
+D2	Fixed legacy color code in unrestricted sleepmsg.
+D3	Updated adventure and MiniMessage.</notes>
     <link>https://discord.com/channels/654087250665144321/654444452982816769</link>
   </developer>
 </versions>
