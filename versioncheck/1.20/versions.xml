@@ -1,0 +1,16 @@
+<versions>
+  <release>
+    <version>1.20_2.13.54</version>
+    <notes>D1	Fixed sleepmsg when player has unrestricted permission.
+D2	Fixed legacy color code in unrestricted sleepmsg.
+D3	Updated adventure and MiniMessage for 1.21.5</notes>
+    <link>https://www.spigotmc.org/resources/singleplayersleep.68139/history</link>
+  </release>
+  <developer>
+    <version>1.20_2.13.54.D3</version>
+    <notes>D1	Fixed sleepmsg when player has unrestricted permission.
+D2	Fixed legacy color code in unrestricted sleepmsg.
+D3	Updated adventure and MiniMessage.</notes>
+    <link>https://discord.com/channels/654087250665144321/654444452982816769</link>
+  </developer>
+</versions>
