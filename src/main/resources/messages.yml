@@ -1,0 +1,21 @@
+# DO NOT CHANGE VERSION
+version: 1.0.3
+# Set msgs for random sleep msgs here sleepmsg#: <player> msg here
+# Don't forget the space between : and the start of the message.
+# Color codes are now usable in sleepmsgs, Example: <BLACK>Black<RESET>Reset
+# RGB format is §xFF00FF (§x§F§F§F§F§F§F<player> §x§F§F§A§A§0§0went to bed. Sweet Dreams)
+# take Hex code replace hashmark with §x then place § before each character in the Hex code. 
+# THERE MUST BE A COLOR CODE IN FRONT
+messages:
+  sleep:
+    count: 5
+    message_1: <#FFFFFF><player> <rainbow>is sleeping</rainbow>...
+    message_2: <#FFFFFF><player> <#FFAA00>went to bed. Sweet Dreams!
+    message_3: <YELLOW>Shhh! <#FFFFFF><player> <#FF0000>is <#FF00FF>trying <#0000FF>to <#00FF00>sleep!
+    message_4: <#FFFFFF><player> <#FF00FF>is asleep at the wheel
+    message_5: <#FFFFFF>NO ONE<colon> ...<br><#FFFFFF><player><colon> <#FFFF00>go to bed.
+  dayskip:
+    count: 3
+    message_1: <WHITE><player> <WHITE>wants to <BLUE>sleep <WHITE>the <YELLOW>day <WHITE>away...
+    message_2: <#FFFFFF><player> <#FF7F00>wants <#FFFF00>to <#00FF00>sleep <#0000FF>the <#4B0082>day <#821073>away<#FFFFFF>...
+    message_3: <#FFFFFF><player> <gradient:#000000:#FFFF00>wants to sleep the day away</gradient>...
