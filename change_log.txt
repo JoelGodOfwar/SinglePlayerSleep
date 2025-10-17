@@ -1,5 +1,20 @@
+2.13.55
+D1	Changed to a better Json message sender. Removed Adventure as it's not needed anymore.
+D2	Fixed cancel messages, added log for delayTime.
+D3	.
+1.20_2.13.54
+D1	Fixed sleepmsg when player has unrestricted permission.
+D2	Fixed legacy color code in unrestricted sleepmsg.
+D3	Updated adventure and MiniMessage for 1.21.5
 2.13.53
-D1	
+D1	Fixed server version comparer to work with Paper.
+D2	Fixed issue with messages and sleep commands.
+D3	Fix color formating. Changed min version to 1.16
+D4	Fixed message copier.
+D5	Fixed Random Message selector.
+D6	Fixed issue with hexcode updater.
+D7	Fixed pattern for Standard Hex codes, Now converts Legacy codes to Hex.
+D8	Added parser for legacy format codes to MiniMessage Tags.
 2.13.52
 D1	Switched color parser to mimic EssentialsX.
 D2	Added fileVersions.yml, split sleepmsgs into messages.yml
