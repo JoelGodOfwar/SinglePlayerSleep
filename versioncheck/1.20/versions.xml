@@ -7,10 +7,11 @@ D3	Updated adventure and MiniMessage for 1.21.5</notes>
     <link>https://www.spigotmc.org/resources/singleplayersleep.68139/history</link>
   </release>
   <developer>
-    <version>1.20_2.13.55.D3</version>
+    <version>1.20_2.13.55.D4</version>
     <notes>D1  Changed to a better Json message sender. Removed Adventure as it's not needed anymore.
     D2    Fixed cancel messages, added log for delayTime.
-    D3  Fixed mislabeled paths.</notes>
+    D3  Fixed mislabeled paths.
+    D4    fixed raw JSON rendering on Paper with MiniMessage/Gson fallback; added sleep/dayskip_canceled YAML categories.</notes>
     <link>https://discord.com/channels/654087250665144321/654444452982816769</link>
   </developer>
 </versions>
