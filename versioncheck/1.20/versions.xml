@@ -7,7 +7,7 @@ D3	Updated adventure and MiniMessage for 1.21.5</notes>
     <link>https://www.spigotmc.org/resources/singleplayersleep.68139/history</link>
   </release>
   <developer>
-    <version>1.20_2.13.55.D7</version>
+    <version>1.20_2.13.55.D8</version>
     <notes>D1  Changed to a better Json message sender. Removed Adventure as it's not needed anymore.
     D2    Fixed cancel messages, added log for delayTime.
     D3  Fixed mislabeled paths.
@@ -15,7 +15,8 @@ D3	Updated adventure and MiniMessage for 1.21.5</notes>
     D5    Added config options `ignoreVanishedPlayers` and `autoFixSleepingPercentage`.
     Moved sleep/day skip mechanics into a dedicated `PlayerBedEnterHandler` class for better modularity and maintainability
     D6    Fixed an issue where SPS would think a player is sleeping already, fixed some message formats.
-    D7    Implemented robust JSON message handler that properly detects and supports raw vanilla JSON, MiniMessage, and legacy colors without conflicts.</notes>
+    D7    Implemented robust JSON message handler that properly detects and supports raw vanilla JSON, MiniMessage, and legacy colors without conflicts.
+    D8    Fixed "player already sleeping" bug, timer now always resets properly even if event is cancelled, Backend cleanup (no visible changes)</notes>
     <link>https://discord.com/channels/654087250665144321/654444452982816769</link>
   </developer>
 </versions>
