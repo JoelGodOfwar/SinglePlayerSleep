@@ -17,19 +17,8 @@ D12 Updated gradients to accept up to 16 colors in CoreUtils.</notes>
     <link>https://dev.bukkit.org/projects/singleplayersleep2/files</link>
   </release>
   <developer>
-    <version>1.20_2.13.55.D11</version>
-    <notes>D1  Changed to a better Json message sender. Removed Adventure as it's not needed anymore.
-    D2    Fixed cancel messages, added log for delayTime.
-    D3  Fixed mislabeled paths.
-    D4    fixed raw JSON rendering on Paper with MiniMessage/Gson fallback; added sleep/dayskip_canceled YAML categories.
-    D5    Added config options `ignoreVanishedPlayers` and `autoFixSleepingPercentage`.
-    Moved sleep/day skip mechanics into a dedicated `PlayerBedEnterHandler` class for better modularity and maintainability
-    D6    Fixed an issue where SPS would think a player is sleeping already, fixed some message formats.
-    D7    Implemented robust JSON message handler that properly detects and supports raw vanilla JSON, MiniMessage, and legacy colors without conflicts.
-    D8    Fixed "player already sleeping" bug, timer now always resets properly even if event is cancelled, Backend cleanup (no visible changes)
-    D9    Fixed Cancel message format via CoreUtils update.
-    D10   Removed Titles on sleeping, kept console logging.
-    D11   Fixed VersionChecker to not see D9 as newer than D10.</notes>
+    <version>1.20_2.13.56.D1</version>
+    <notes>D1  Fixed sleep lockups & custom messages now preserved on update</notes>
     <link>https://dev.bukkit.org/projects/singleplayersleep2/files</link>
   </developer>
 </versions>
