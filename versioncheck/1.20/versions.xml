@@ -18,7 +18,7 @@ D12 Updated gradients to accept up to 16 colors in CoreUtils.</notes>
   </release>
   <developer>
     <version>1.20_2.13.56.D1</version>
-    <notes>D1  Fixed sleep lockups & custom messages now preserved on update</notes>
+    <notes>D1  Fixed sleep lockups &amp; custom messages now preserved on update</notes>
     <link>https://dev.bukkit.org/projects/singleplayersleep2/files</link>
   </developer>
 </versions>
