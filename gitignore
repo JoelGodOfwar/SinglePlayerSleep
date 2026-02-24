@@ -1,0 +1,39 @@
+# .gitignore for MoreMobHeads (Maven/Java project)
+
+# Maven build output
+/target/
+/bin/
+local-maven-repo/
+pom.xml.tag
+pom.xml.releaseBackup
+
+# Compiled classes and JARs
+*.class
+*.jar
+*.war
+
+# Logs
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files (IntelliJ, Eclipse, etc.)
+/.idea/
+*.iml
+.classpath
+.project
+/.settings/
+
+# Maven wrapper
+mvnw
+mvnw.cmd
+.mvn/
+
+# Coverage and temp
+*.lcov
+jacoco.exec
+*.swp
+*~
