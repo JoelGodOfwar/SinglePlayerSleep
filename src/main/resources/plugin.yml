@@ -1,8 +1,8 @@
 name: SinglePlayerSleep
-main: main.java.sps.SinglePlayerSleep
-version: 1.20_2.13.55.D2
+main: com.github.joelgodofwar.sps.SinglePlayerSleep
+version: 1.20_2.13.56
 author: JoelGodOfWar(JoelYahwehOfWar)
-api-version: 1.16
+api-version: 1.20
 softdepend: [BloodMoon, bloodmoon-advanced, VentureChat, Essentials, EssentialsX, HexNicks]
 
 commands:
@@ -62,4 +62,3 @@ permissions:
   sps.showCancelledMsg:
     description: Allows player to see the player has cancelled sleeping message.
     default: true
-    

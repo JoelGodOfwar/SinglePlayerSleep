@@ -1,5 +1,5 @@
 # DO NOT CHANGE VERSION
-version: 1.0.3
+version: 1.0.4
 # Set msgs for random sleep msgs here sleepmsg#: <player> msg here
 # Don't forget the space between : and the start of the message.
 # Color codes are now usable in sleepmsgs, Example: <BLACK>Black<RESET>Reset
@@ -19,3 +19,13 @@ messages:
     message_1: <WHITE><player> <WHITE>wants to <BLUE>sleep <WHITE>the <YELLOW>day <WHITE>away...
     message_2: <#FFFFFF><player> <#FF7F00>wants <#FFFF00>to <#00FF00>sleep <#0000FF>the <#4B0082>day <#821073>away<#FFFFFF>...
     message_3: <#FFFFFF><player> <gradient:#000000:#FFFF00>wants to sleep the day away</gradient>...
+  sleep_canceled:
+    count: 3
+    message_1: <#FFFFFF><player> <#FF5555>woke up—no dreams for you tonight! <rainbow>Sweet revenge?</rainbow>
+    message_2: <YELLOW><player> <#FF0000>canceled sleep. <WHITE>The monsters thank you...
+    message_3: <#FFFFFF><player> <gradient:#FF5555:#00FF00>aborted bedtime</gradient>. Back to the grind!
+  dayskip_canceled:
+    count: 3
+    message_1: <#FFFFFF><player> <#FFAA00>changed their mind—daylight wins! <gradient:#FFFF00:#FF0000>Sun's up!</gradient>
+    message_2: <YELLOW><player> <#FF0000>bailed on the dayskip. <WHITE>Night owls unite?
+    message_3: <#FFFFFF><player> <rainbow>woke early</rainbow>—no skipping the sun today!
