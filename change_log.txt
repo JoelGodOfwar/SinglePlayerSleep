@@ -1,7 +1,29 @@
+2.13.57
+D1	.
+2.13.56
+D1	Fixed sleep lockups &amp; custom messages now preserved on update
+D2	Fixed concurrent sleep/day skip conflicts and stale task recovery.
+D3	Removed check for player already sleeping.
+D4	Added debug logging for night/thundering checks (world name + time included)
+D5	Normalized dayskip to be more like normal sleep, also normalized cancel for dayskip and sleep.
+D6	Dynamic message key count + fallback/safety logic for both sleep and dayskip (no visible errors, length guard, crash prevention)
+D7	Fixed thunderstorm logic, removed misplaced return.
+D8	Updated config.yml for readability, split into config.yml and config_comments.yml.
+D9	Migrated custom logger to CoreUtils
 2.13.55
 D1	Changed to a better Json message sender. Removed Adventure as it's not needed anymore.
 D2	Fixed cancel messages, added log for delayTime.
-D3	.
+D3	Fixed mislabeled paths.
+D4	fixed raw JSON rendering on Paper with MiniMessage/Gson fallback; added sleep/dayskip_canceled YAML categories.
+D5	Added config options `ignoreVanishedPlayers` and `autoFixSleepingPercentage`.
+    Moved sleep/day skip mechanics into a dedicated `PlayerBedEnterHandler` class for better modularity and maintainability.
+D6	Fixed an issue where SPS would think a player is sleeping already, fixed some message formats.
+D7	Implemented robust JSON message handler that properly detects and supports raw vanilla JSON, MiniMessage, and legacy colors without conflicts.
+D8	Fixed "player already sleeping" bug — timer now always resets properly even if event is cancelled, Backend cleanup (no visible changes)
+D9	Fixed Cancel message format via CoreUtils update.
+D10	Removed Titles on sleeping, kept console logging.
+D11 Fixed VersionChecker to not see D9 as newer than D10.
+D12 Updated gradients to accept up to 16 colors in CoreUtils.
 1.20_2.13.54
 D1	Fixed sleepmsg when player has unrestricted permission.
 D2	Fixed legacy color code in unrestricted sleepmsg.

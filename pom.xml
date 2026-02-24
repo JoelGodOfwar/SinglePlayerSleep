@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>SinglePlayerSleep</groupId>
   <artifactId>SinglePlayerSleep</artifactId>
-  <version>1.20_2.13.55.D2-DEV</version>
+  <version>1.20_2.13.56</version>
   <name>Single Player Sleep</name>
   <description>Allows a single player to turn night to day, or day to night with dayskip.</description>
   <properties>
@@ -29,11 +29,11 @@
           <relocations>
             <relocation>
               <pattern>org.bstats</pattern>
-              <shadedPattern>main.java.sps.lib</shadedPattern>
+              <shadedPattern>com.github.joelgodofwar.sps.lib</shadedPattern>
             </relocation>
             <relocation>
               <pattern>lib.github.joelgodofwar</pattern>
-              <shadedPattern>main.java.sps.lib</shadedPattern>
+              <shadedPattern>com.github.joelgodofwar.sps.lib</shadedPattern>
             </relocation>
           </relocations>
         </configuration>
@@ -97,7 +97,7 @@
     <dependency>
       <groupId>lib.github.joelgodofwar</groupId>
       <artifactId>core-utils</artifactId>
-      <version>1.0.24</version>
+      <version>RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -115,7 +115,7 @@
     <dependency>
       <groupId>org.bstats</groupId>
       <artifactId>bstats-bukkit</artifactId>
-      <version>3.0.2</version>
+      <version>3.1.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -143,5 +143,11 @@
       <version>2.19.1</version>
       <scope>provided</scope>
     </dependency>
+      <dependency>
+        <groupId>net.luckperms</groupId>
+        <artifactId>api</artifactId>
+        <version>5.4</version>
+        <scope>provided</scope>
+      </dependency>
   </dependencies>
 </project>
