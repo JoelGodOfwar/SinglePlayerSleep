@@ -1,0 +1,47 @@
+# DO NOT CHANGE VERSION
+version: 1.1.0
+
+plugin:
+  auto_update_check: true
+  debug: false
+  lang: en_US
+
+global:
+  colorful_console: true
+  long_plugin_name: true
+  console_default_world: "world"
+  random_messages: true
+  broadcast_per_world: true
+  ignore_vanished: true
+  message_color: WHITE
+  player_name_color: WHITE
+  cancel_color: RED
+  cancel_bracket_color: YELLOW
+  limits:
+    use_cooldown: 30
+    cancel_cooldown: 30
+  nickname_use_displayname: true
+
+sleep:
+  auto_fix_sleeping_percentage: true
+  blacklist: world_nether, world_the_end
+  delay: 10
+  unrestricted: false
+  waketime: NORMAL
+  reset_insomnia: false
+  clear_rain: false
+  notify_must_be_night: false
+  messages:
+    display_cancel: true
+    broadcast_cancel: true
+    exit_bed_cancels: false
+
+dayskip:
+  enabled: false
+  blacklist: world_nether, world_the_end
+  delay: 10
+  unrestricted: false
+  item_required: true
+  messages:
+    display_cancel: true
+    broadcast_cancel: true

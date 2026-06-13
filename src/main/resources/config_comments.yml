@@ -1,0 +1,110 @@
+########################################################################################
+# IMPORTANT: THIS FILE IS FOR REFERENCE ONLY - DO NOT EDIT OR USE IN-GAME
+#
+# This config_comments.yml file is ONLY included in the JAR as documentation.
+# The plugin NEVER loads or reads this file at runtime.
+#
+# All actual configuration happens in config.yml.
+# Comments and explanations here are just to help you understand the options.
+#
+# If you edit this file, your changes will be ignored and lost on update/reload.
+#
+########################################################################################
+#
+# DO NOT CHANGE VERSION
+version: 1.1.0
+
+## Plugin-wide settings (auto-update, debug, language)
+plugin:
+  ## Change to false to stop auto-update-check.
+  auto_update_check: true
+  ## Set to true before sending a log about an issue.
+  ## Logs trace data required to pinpoint where errors are.
+  debug: false
+  ## Set the language to use. Languages: čeština (cs_CZ), Deutsch (de_DE), English (en_US),
+  ## Español (es_ES), Español (es_MX), Français (fr_FR), Italiano (it_IT), Magyar (hu_HU),
+  ## 日本語 (ja_JP), 한국어 (ko_KR), Lolcat (lol_US), Melayu (my_MY), Nederlands (nl_NL),
+  ## Polski (pl_PL), Português (pt_BR), Русский (ru_RU), Svenska (sv_SV), Türkçe (tr_TR),
+  ## 中文(简体) (zh_CN), 中文(繁體) (zh_TW)
+  lang: en_US
+
+## Global/shared settings (apply to both sleep and dayskip)
+global:
+  ## Enables fancy ANSI colors in console.
+  colorful_console: true
+  ## Should plugin use short name (SPS) or long name (SinglePlayerSleep)?
+  long_plugin_name: true
+  ## Default world name to use for console commands (/sleep or /dayskip) when no world is specified.
+  ## Use the exact world name (case-sensitive). If invalid or missing, falls back to the first loaded world.
+  console_default_world: "world"
+  ## Set to true to use random messages for sleep/dayskip broadcasts.
+  random_messages: true
+  ## Should broadcasts be per world, or server wide? (Should be true for multiverse/multi-world servers)
+  broadcast_per_world: true
+  ## Set to true to ignore vanished players when handling sleep events and canceling.
+  ignore_vanished: true
+  ## Color for the main message text (was sleepmsgcolor / skip_color).
+  ## Colors: AQUA, BLACK, GOLD, GRAY, BLUE, GREEN, RED, YELLOW, WHITE,
+  ## DARK_AQUA, DARK_BLUE, DARK_GRAY, DARK_GREEN, DARK_RED, DARK_PURPLE, LIGHT_PURPLE,
+  ## MAGIC, BOLD, STRIKETHROUGH, UNDERLINE, ITALIC, RESET
+  message_color: WHITE
+  ## Color for player names in messages.
+  player_name_color: WHITE
+  ## Color for the [CANCEL] link text in broadcast messages.
+  cancel_color: RED
+  ## Color for the brackets around the [CANCEL] link.
+  cancel_bracket_color: YELLOW
+  ## Cooldown limits (in seconds) to prevent spam
+  limits:
+    ## Time a player must wait before using sleep or dayskip again.
+    ## Set to 0 to disable.
+    use_cooldown: 30
+    ## Time a player must wait before using cancel again.
+    ## Set to 0 to disable.
+    cancel_cooldown: 30
+  ## Should player nicknames use their display name (true) or username (false)?
+  nickname_use_displayname: true
+
+## Sleep settings
+sleep:
+  ## Set to true to auto-fix playersSleepingPercentage to 100 if invalid or <= 0.
+  auto_fix_sleeping_percentage: true
+  ## Worlds where sleep is disabled (case-sensitive, comma-separated)
+  blacklist: world_nether, world_the_end
+  ## Delay between sleep start and day change (seconds). Minimum 1, recommend 10.
+  delay: 10
+  ## If true, disables all broadcast messages and allows anyone to sleep.
+  unrestricted: false
+  ## Set wake time: Early (23000) or Normal (24000)
+  waketime: NORMAL
+  ## Should SPS reset the time_since_rest stat for all players in the world?
+  reset_insomnia: false
+  ## Set whether to allow player to stop rain when it is not night.
+  clear_rain: false
+  ## Set whether the player should be told it must be night/storm to use.
+  notify_must_be_night: false
+  messages:
+    ## Set if the [CANCEL] link is shown in broadcast messages.
+    display_cancel: true
+    ## Set to true to broadcast "<player> canceled sleep."
+    broadcast_cancel: true
+    ## Set to true to cancel sleep if the player exits their bed.
+    exit_bed_cancels: false
+
+## DaySkip settings
+dayskip:
+  ## Enable(true) or Disable(false) the dayskipper feature.
+  enabled: false
+  ## Worlds where dayskip is disabled (case-sensitive, comma-separated)
+  blacklist: world_nether, world_the_end
+  ## Delay between dayskip request and night change (seconds). Minimum 1, recommend 10.
+  delay: 10
+  ## If true this will disable ability of players to cancel DaySkip.
+  unrestricted: false
+  ## Require DaySkipper item to use DaySkip.
+  item_required: true
+  messages:
+    ## Set if the [CANCEL] link is shown in broadcast messages.
+    display_cancel: true
+    ## Set to true to broadcast "<player> canceled dayskip."
+    broadcast_cancel: true

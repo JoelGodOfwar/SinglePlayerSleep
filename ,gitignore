@@ -1,0 +1,52 @@
+# Maven build output
+/target/
+/bin/
+local-maven-repo/
+
+# Maven temporary files
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+# Compiled classes and JARs
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IntelliJ IDEA
+/.idea/
+*.iml
+*.iws
+*.ipr
+out/
+classes/
+
+# Eclipse / other IDEs
+.classpath
+.project
+/.settings/
+
+# Maven Wrapper (if you don't use it)
+mvnw
+mvnw.cmd
+.mvn/
+
+# Temporary / Coverage files
+*.tmp
+*.bak
+*.swp
+*~
+*.lcov
+jacoco.exec
