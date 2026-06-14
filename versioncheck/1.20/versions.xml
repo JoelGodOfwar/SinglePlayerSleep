@@ -7,9 +7,8 @@ Maximum compatible version is now 26.1.2</notes>
     <link>https://dev.bukkit.org/projects/singleplayersleep2/files</link>
   </release>
   <developer>
-    <version>1.20_2.13.57.D2</version>
-    <notes>D1    Code cleanup for Player join essentials.sleepingignored permission checking.
-    D2    Removed LuckPerms imports.</notes>
+    <version>1.20_2.13.58.D1</version>
+    <notes>D1    Fixed an issue with improper permission check for some commands.</notes>
     <link>https://dev.bukkit.org/projects/singleplayersleep2/files</link>
   </developer>
 </versions>
