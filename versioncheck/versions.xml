@@ -1,0 +1,15 @@
+<versions>
+  <v1.20>
+    <release>
+      <version>1.20_2.13.58</version>
+      <notes>D1  Fixed an issue with improper permission check for some commands.
+D2  Max version now 26.2</notes>
+      <link>https://dev.bukkit.org/projects/singleplayersleep2/files</link>
+    </release>
+    <developer>
+      <version>1.20_2.13.58.D1</version>
+      <notes>D1    Fixed an issue with improper permission check for some commands.</notes>
+      <link>https://dev.bukkit.org/projects/singleplayersleep2/files</link>
+    </developer>
+  </v1.20>
+</versions>
